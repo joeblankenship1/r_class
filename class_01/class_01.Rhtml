@@ -1,0 +1,196 @@
+<html>
+
+<head>
+<title>Vectors & Factors</title>
+</head>
+
+<body>
+
+<p><b>Vectors</b> are one-dimensional data objects of a single mode (e.g.s numeric, logical, character)</p>
+<p>They can be created using the function <b>c()</b></p>
+
+<!--begin.rcode
+x <- c(1,4,6,2,8,12,55,21)
+x
+y <- c("cat", "dog", "fish", "rabbit", "pelican")
+y
+z <- c(T,F,F,F,T,T,F)
+z
+is.numeric(x)
+is.character(x)
+is.character(y)
+is.numeric(z)
+is.logical(z)
+end.rcode-->
+
+<p>If you try to assign different data types to a vector, R will try to coerce values if it can:</p>
+
+<!--begin.rcode
+d <- c(3,4,6,7,"cat", "dog", T, F)
+d
+end.rcode-->
+
+<p>You can also concatenate vectors together:</p>
+
+<!--begin.rcode
+p <- c(1,2,5,6);q <- c(6,7,11,13)
+pq <- c(p,q)
+pq
+
+f <- c("Arkansas", "Florida", "Idaho")
+g <- c("Nevada", "Colorado", "Texas")
+s <- c(f,g)
+end.rcode-->
+
+<p><b>Vectors</b> are often produced as a result from performing a function - e.g. <i>rnorm()</i> is a function that generates values from a standard normal distribution:</p>
+
+<!--begin.rcode
+x <- rnorm(100)
+x
+end.rcode-->
+
+<p>A very useful function that retrieves an attribute of a vector is its length (i.e. number of elements in the vector):</p>
+
+<!--begin.rcode
+length(x)
+end.rcode-->
+
+<p>Another very useful function for numeric vectors is the generic <b>summary()</b> function:</p>
+
+<!--begin.rcode
+summary(x)
+end.rcode-->
+
+<p>This will provide you with basic statistics on the vector. However, this is not so useful for other types of vectors:</p>
+
+<!--begin.rcode
+summary(f)
+summary(z)
+end.rcode-->
+
+<p>Arithmetic operators and many functions process vectors element by element:</p>
+
+<!--begin.rcode
+sr_q <- sqrt(q)
+sr_q
+end.rcode-->
+
+<p>Functions also exist that process character type vectors:</p>
+
+<!--begin.rcode
+r <- c("The Rain in Spain")
+q <- c("falls mainly on the Plain")
+rq <- paste(r,q,sep = "...")
+rq
+end.rcode-->
+
+<p><b>Vector indexing</b> is the process of selecting elements (or items) inside a vector:</p>
+
+<!--begin.rcode
+v <- c(1,34,22,5,6,8,9,45,21)
+y <- v[c(1,5,9)]
+y
+end.rcode-->
+
+<p>Since we start counting at "1" when counting elements in R, the above command selected elements 1, 5, and 9 from <i>v</i></p>
+
+<!--begin.rcode
+x <- rnorm(100)
+y <- x[23]
+y
+y <- x[101]
+y
+end.rcode-->
+
+<p>Here we used the <i>rnorm()</i> function to produce a vector with 100 numeric elements. Vector <i>y</i> was created when we indexed element 23 from vector <i>x</i>. However, if we attempt to index an element outside of the range of vector <i>x</i>, we will get a null value or error back.</p>
+
+<p><b>Of Note!</b> Notice how we can assign elements to vector <i>y</i> and then do it again directly below our first assignment. This is because R executes the code from top to bottom and allows for <b>dynamic allocation</b> of vectors.</p>
+
+<!--begin.rcode
+y <- x[21:30]
+y
+y <- c(x[21:30], x[40:45])
+y
+end.rcode-->
+
+<p>We expand on the previous concept of indexing by now creating <i>y</i> from the elements ranging from element 21 to element 30 in vector <i>x</i>. We then revisit the concept of concatenating vectors by joining two different ranges in vector <i>x</i> to create vector <i>y</i>.</p>
+
+<!--begin.rcode
+v <- c(1,34,22,5,6,8,9,45,21)
+z <- v[-8]
+z
+z <- v[-c(2,4,8)]
+z
+z <- v[-(7:9)]
+z
+z <- v[-(7:12)]
+z
+end.rcode-->
+
+<p>We can also create new <b>subset vectors</b> by removing elements from another vector. Vector <i>z</i> is created from all the elements found in vector <i>v</i> <b>minus</b> element <i>8</i>. We then create vector <i>z</i> from all element in vector <i>v</i> <b>minus the combination</b> of elements <i>2, 4, 8</i>. This can also be done with a range of elements as seen in vector <i>z</i> <b>minus the range</b> of elements <i>7 through 9</i> and in vector <i>z</i> <b>minus the range</b> of elements <i>7 through 12</i>. Notice that since we only have 9 elements in vector <i>v</i>, it could only remove elements 7 through 9 even though the command also wanted to remove the non-existent elements 10 through 12.</p>
+
+<!--begin.rcode
+v <- c(1,34,22,5,6,8,9,45,21)
+z <- v[v >= 6]
+z
+z <- v[v != 8]
+z
+z <- v[v==5]
+z
+z <- v < 22
+z
+end.rcode-->
+
+<p>Above we have again created <b>subset vectors</b>, but we have now done so using logical and relational operators - e.g. Boolean operators such as greater than, less than, equal to, etc. We once again create vector <i>z</i> from <i>v</i> by calling for any element of <i>v greater than or equal to 6</i>. We then define vector <i>z</i> as any element in <i>v not equal to 8</i>. This is done again by looking for elements in <i>v equal to 5</i>. However, when we attempt to do this without the call to index vector <i>v</i> using the <em>[square brackets]</em>, it results in a comparison of each element in vector <i>v</i> by the logical query for vector <i>z</i> giving us a vector of logical values and <b>NOT</b> a vector of numeric values.</p>
+
+<!--begin.rcode
+m <- seq(1,20,2)
+m
+m <- seq(1,20, length = 30)
+m
+end.rcode-->
+
+<p>Above we have produced a <i>sequence</i> ranging from <i>1 to 20</i> in <i>increments of 2</i> using the <b>seq()</b> function. We can also produce vector <i>m</i> with a sequence ranging from <i>1 to 20</i> but resulting in a vector <i>30 elements long with values between 1 and 20.</i></p>
+
+<!--begin.rcode
+b <- c(4,9)
+c <- rep(b, 3)
+c
+t <- c("dog", "cat")
+s <- rep(t,3)
+s
+end.rcode-->
+
+<p>Using the <b>rep()</b> function, we can replicate values of a vector any number of times. Vector<i>c</i> replicates the elements of vector <i>b three times</i>. Vector <i>s</i> does the same thing with the character vector <i>t</i>.</p>
+
+<!--begin.rcode
+y <- c(22,35,45)
+names(y) <- c("ted", "nancy", "bill")
+y
+y["ted"]
+y[c("ted", "bill")]
+y[["ted"]]
+end.rcode-->
+
+<p>We can also assign names to vector elements. Using the <b>names()</b> function, we can assign names to the elements in vector <i>y</i>. Note that we have an equal number of names to numeric elements. We can then index our vector <i>y</i> by the name <i>"ted"</i>, a <i>combination or "ted" and "bill"</i>, and we can even pull a <i>nested element</i> through the use of <b>nested indexing</b>!</p>
+
+<!--begin.rcode
+head(exchar)
+head(exfactor)
+end.rcode-->
+
+<p>The <b>head()</b> function comes in very useful when we want to denote groupings of observations for/in analysis or better stated, how we represent categorical variables:</p>
+
+<!--begin.rcode
+v <- c(1,2,3)
+z <- as.factor(v)
+z
+v <- c(1,1,1,2,1,3)
+z <- as.factor(v)
+z
+end.rcode-->
+
+<p>Using the <b>as.factor()</b> function as seen above, we can take either numbers or characters and use them as factors.</p>
+
+</body>
+</html>
